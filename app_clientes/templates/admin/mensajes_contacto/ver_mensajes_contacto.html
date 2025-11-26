@@ -1,0 +1,7 @@
+{% extends "base_admin.html" %}
+{% block contenido_admin %}
+{% load tz %}
+{% with titulo_seccion='Mensajes de contacto' url_editar_name='app_clientes:actualizar_mensajes_contacto' url_eliminar_name='app_clientes:borrar_mensajes_contacto' %}
+    {% include "admin/includes/crud_list.html" %}
+{% endwith %}
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "base_admin.html" %}
+{% block contenido_admin %}
+    {% with slug='mensajes_contacto' titulo_seccion='Mensajes de contacto' url_lista='app_clientes:ver_mensajes_contacto' %}
+        <article class="card mb-3">
+            <div class="card-body">
+                <h4 class="card-title">Mensaje recibido</h4>
+                <p class="card-text">{{ forms.mensaje|linebreaksbr }}</p>
+            </div>
+        </article>
+
+        {% include "admin/includes/crud_form.html" %}
+    {% endwith %}
+{% endblock %}

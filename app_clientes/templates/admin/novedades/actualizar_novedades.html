@@ -1,0 +1,6 @@
+{% extends "base_admin.html" %}
+{% block contenido_admin %}
+{% with slug='novedades' titulo_seccion='Novedades' url_lista='app_clientes:ver_novedades' %}
+    {% include "admin/includes/crud_form.html" %}
+{% endwith %}
+{% endblock %}

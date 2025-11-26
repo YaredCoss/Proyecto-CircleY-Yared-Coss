@@ -1,0 +1,6 @@
+{% extends "base_admin.html" %}
+{% block contenido_admin %}
+{% with slug='promociones' titulo_seccion='Promociones' url_lista='app_clientes:ver_promociones' %}
+    {% include "admin/includes/crud_form.html" %}
+{% endwith %}
+{% endblock %}

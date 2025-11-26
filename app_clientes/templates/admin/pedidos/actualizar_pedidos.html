@@ -1,0 +1,6 @@
+{% extends "base_admin.html" %}
+{% block contenido_admin %}
+{% with slug='pedidos' titulo_seccion='Pedidos' url_lista='app_clientes:ver_pedidos' %}
+    {% include "admin/includes/crud_form.html" %}
+{% endwith %}
+{% endblock %}

@@ -1,0 +1,6 @@
+{% extends "base_admin.html" %}
+{% block contenido_admin %}
+{% with titulo_seccion='Pedidos' url_editar_name='app_clientes:actualizar_pedidos' url_eliminar_name='app_clientes:borrar_pedidos' %}
+    {% include "admin/includes/crud_list.html" %}
+{% endwith %}
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load static %}
+{% block contenido %}
+<section class="titulo-busqueda">
+    <h2>Promociones activas</h2>
+    <p>¡Aprovecha las promociones vigentes durante este mes!</p>
+</section>
+
+<div class="grid-card">
+    {% for promocion in promociones %}
+        <article class="promo-card">
+            <div class="producto-imagen">
+                {% if promocion.imagen_url %}
+                    <img src="{{ promocion.imagen_url.url }}" alt="{{ promocion.nombre }}">
+                {% endif %}
+            </div>
+            <h3>{{ promocion.nombre }}</h3>
+            <p>{{ promocion.descripcion }}</p>
+            <small>Vigencia: {{ promocion.fecha_inicio }} - {{ promocion.fecha_fin }}</small>
+            <span class="badge">{{ promocion.tipo_descuento }} · {{ promocion.valor_descuento }}</span>
+        </article>
+    {% empty %}
+        <p>No hay promociones activas.</p>
+    {% endfor %}
+</div>
+{% endblock %}

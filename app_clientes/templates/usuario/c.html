@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load static %}
+{% block contenido %}
+<section class="contacto">
+    <h2>Contáctanos</h2>
+    <div class="contacto-grid">
+        <form method="post" class="form-contacto">
+            {% csrf_token %}
+            <label for="nombre">Nombre</label>
+            <input type="text" id="nombre" name="nombre" required>
+
+            <label for="correo">Correo electrónico</label>
+            <input type="email" id="correo" name="correo" required>
+
+            <label for="mensaje">Mensaje</label>
+            <textarea id="mensaje" name="mensaje" rows="5" required></textarea>
+
+            <button type="submit" class="btn btn-primario">Enviar mensaje</button>
+        </form>
+
+        <aside class="info-contacto">
+            <h3>Atención Circle Y</h3>
+            <p>Av. Principal #123, Ciudad Y</p>
+            <p>Teléfono: 656 123 4567</p>
+            <p>Correo: contacto@circley.com</p>
+            <p>Horario: 24 horas</p>
+        </aside>
+    </div>
+</section>
+{% endblock %}

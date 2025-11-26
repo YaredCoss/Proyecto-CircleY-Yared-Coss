@@ -1,0 +1,22 @@
+{% extends "base_admin.html" %}
+{% block contenido_admin %}
+<h1 class="titulo-seccion">Dashboard</h1>
+<div class="cards-dashboard">
+    <article class="card-dashboard">
+        <h3>Clientes</h3>
+        <span>{{ total_clientes }}</span>
+    </article>
+    <article class="card-dashboard">
+        <h3>Pedidos</h3>
+        <span>{{ total_pedidos }}</span>
+    </article>
+    <article class="card-dashboard">
+        <h3>Productos</h3>
+        <span>{{ total_productos }}</span>
+    </article>
+    <article class="card-dashboard">
+        <h3>Promociones activas</h3>
+        <span>{{ total_promociones_activas }}</span>
+    </article>
+</div>
+{% endblock %}

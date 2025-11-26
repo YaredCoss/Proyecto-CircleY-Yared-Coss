@@ -1,0 +1,6 @@
+{% extends "base_admin.html" %}
+{% block contenido_admin %}
+{% with slug='productos_promociones' titulo_seccion='Producto ↔ Promoción' url_lista='app_clientes:ver_productos_promociones' %}
+    {% include "admin/includes/crud_form.html" %}
+{% endwith %}
+{% endblock %}

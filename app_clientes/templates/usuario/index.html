@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% load static %}
+{% block contenido %}
+<section class="hero">
+    <img src="{% static 'img/descarga.png' %}" alt="Circle Y" class="img1">
+    <h2>Bienvenido a Circle Y</h2>
+    <p>Tu parada rápida para lo que necesitas, a cualquier hora del día.</p>
+</section>
+
+<section class="destacados">
+    <h3>Ventajas de comprar con nosotros</h3>
+    <div class="columnas">
+        <article>
+            <h4>Atención 24 horas</h4>
+            <p>Siempre disponibles para ayudarte con cualquier antojo o necesidad a cualquier hora del día. Nuestro equipo está capacitado para brindarte una atención rápida, amable y eficiente, sin importar si es de madrugada o en horas de mayor afluencia. Además, mantenemos nuestras tiendas bien abastecidas para garantizar que siempre encuentres lo que buscas.</p>
+        </article>
+        <article>
+            <h4>Acceso fácil</h4>
+            <p>Estacionamiento amplio y sucursales accesibles para tu mayor comodidad. Contamos con ubicaciones estratégicas para que puedas llegar rápidamente estés donde estés. Nuestras tiendas están diseñadas para facilitar la movilidad, con entradas amplias, buena señalización y áreas seguras para clientes a pie, en auto o en motocicleta.</p>
+        </article>
+        <article>
+            <h4>Servicios adicionales</h4>
+            <p>Recargas, pago de servicios, retiro de efectivo y más para hacer tu día más práctico. También ofrecemos venta de tiempo aire, servicios de paquetería, recarga de tarjetas de transporte, compra de boletos y otros servicios que puedes realizar durante tu visita. Todo esto para que resuelvas múltiples necesidades en un mismo lugar, de manera rápida y confiable.</p>
+        </article>
+    </div>
+</section>
+
+<section class="productos-destacados">
+    <br><br><br><br>
+    <h3>Productos destacados</h3>
+    <div class="grid-productos">
+        {% for producto in productos_destacados %}
+            <div class="producto-card">
+                <div class="producto-imagen">
+                    {% if producto.imagen_url %}
+                        <img src="{{ producto.imagen_url.url }}" alt="{{ producto.nombre }}">
+                    {% else %}
+                        <img src="{% static 'img/placeholder.png' %}" alt="{{ producto.nombre }}">
+                    {% endif %}
+                </div>
+                <h4>{{ producto.nombre }}</h4>
+                <p>{{ producto.descripcion }}</p>
+                <div class="precio">
+                    {% if producto.tiene_descuento_activo %}
+                        <span class="tachado">${{ producto.precio|floatformat:2 }}</span>
+                        <span>{{ producto.precio_con_descuento|floatformat:2 }}</span>
+                    {% else %}
+                        <span>{{ producto.precio|floatformat:2 }}</span>
+                    {% endif %}
+                </div>
+                <form action="{% url 'app_clientes:agregar_al_carrito' producto.id %}" method="post">
+                    {% csrf_token %}
+                    <label for="cantidad-{{ producto.id }}">Cantidad</label>
+                    <input type="number" id="cantidad-{{ producto.id }}" name="cantidad" value="1" min="1">
+                    <button type="submit" class="btn btn-primario">Añadir al carrito</button>
+                </form>
+            </div>
+        {% empty %}
+            <p>No hay productos disponibles por el momento.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

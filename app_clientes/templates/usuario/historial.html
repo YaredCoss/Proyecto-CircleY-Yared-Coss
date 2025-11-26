@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load static %}
+{% block contenido %}
+<section class="historial">
+    <h2>Historial de pedidos</h2>
+    {% if pedidos %}
+        {% for pedido in pedidos %}
+            <article class="pedido-card">
+                <header>
+                    <h3>Pedido #{{ pedido.id }}</h3>
+                    <span class="estado {{ pedido.estado_pedido|lower }}">{{ pedido.get_estado_pedido_display }}</span>
+                </header>
+                <p><strong>Fecha:</strong> {{ pedido.fecha_pedido }}</p>
+                <p><strong>Método de pago:</strong> {{ pedido.get_metodo_pago_display }}</p>
+                <p><strong>Dirección:</strong> {{ pedido.direccion_envio }}</p>
+                <p><strong>Subtotal:</strong> {{ pedido.subtotal|floatformat:2 }}</p>
+                <p><strong>Descuentos:</strong> -{{ pedido.descuento_total|floatformat:2 }}</p>
+                <p><strong>Total:</strong> {{ pedido.total|floatformat:2 }}</p>
+                <h4>Productos</h4>
+                <ul>
+                    {% for detalle in pedido.detalles.all %}
+                        <li>{{ detalle.producto.nombre }} · {{ detalle.cantidad }} x {{ detalle.precio_unitario_venta|floatformat:2 }}</li>
+                    {% endfor %}
+                </ul>
+
+                {% if not pedido.confirmado_cliente %}
+                    <form action="{% url 'app_clientes:confirmar_entrega_cliente' pedido.id %}" method="post" class="form-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-secundario">Confirmar entrega</button>
+                    </form>
+                {% endif %}
+            </article>
+        {% endfor %}
+    {% else %}
+        <p>No tienes pedidos registrados todavía.</p>
+    {% endif %}
+</section>
+{% endblock %}

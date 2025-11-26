@@ -1,0 +1,12 @@
+<section class="crud-delete">
+    <h1 class="titulo-seccion">Confirmar eliminación</h1>
+    <p>¿Seguro que deseas eliminar <strong>{{ instance }}</strong>? Esta acción no se puede deshacer.</p>
+
+    <form method="post" class="acciones-form">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-peligro">Sí, eliminar</button>
+        {% if url_lista %}
+            <a class="btn btn-secundario" href="{% url url_lista %}">Cancelar</a>
+        {% endif %}
+    </form>
+</section>

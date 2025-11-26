@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load static %}
+{% block contenido %}
+<section class="titulo-busqueda">
+    <h2>Productos y Servicios</h2>
+    <form method="get" class="buscador">
+        <input type="search" name="busqueda" placeholder="Busca por nombre, descripción o categoría" value="{{ busqueda }}">
+        <button type="submit" class="btn btn-primario">Buscar</button>
+    </form>
+</section>
+
+<div class="grid-productos">
+    {% for producto in productos %}
+        <article class="producto-card">
+            <div class="producto-imagen">
+                {% if producto.imagen_url %}
+                    <img src="{{ producto.imagen_url.url }}" alt="{{ producto.nombre }}">
+                {% else %}
+                    <img src="{% static 'img/placeholder.png' %}" alt="{{ producto.nombre }}">
+                {% endif %}
+            </div>
+            <h3>{{ producto.nombre }}</h3>
+            <p>{{ producto.descripcion }}</p>
+            <span class="categoria-tag">{{ producto.categoria.nombre }}</span>
+            <div class="precio">
+                {% if producto.tiene_descuento_activo %}
+                    <span class="tachado">{{ producto.precio|floatformat:2 }}</span>
+                    <span>{{ producto.precio_con_descuento|floatformat:2 }}</span>
+                {% else %}
+                    <span>{{ producto.precio|floatformat:2 }}</span>
+                {% endif %}
+            </div>
+            <form action="{% url 'app_clientes:agregar_al_carrito' producto.id %}" method="post">
+                {% csrf_token %}
+                <label for="cantidad-{{ producto.id }}">Cantidad</label>
+                <input type="number" name="cantidad" id="cantidad-{{ producto.id }}" min="1" value="1">
+                <button type="submit" class="btn btn-secundario">Agregar al carrito</button>
+            </form>
+        </article>
+    {% empty %}
+        <p>No encontramos productos con los criterios actuales.</p>
+    {% endfor %}
+</div>
+{% endblock %}

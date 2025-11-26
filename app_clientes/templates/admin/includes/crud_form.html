@@ -1,0 +1,87 @@
+{% load ui_extras %}
+<section class="crud-form">
+    <h1 class="titulo-seccion">
+        {% if is_update %}Editar{% else %}Agregar{% endif %} {{ titulo_seccion|default:slug|snake_to_title }}
+    </h1>
+
+    <form method="post"{% if config.file_fields %} enctype="multipart/form-data"{% endif %} class="form-grid">
+        {% csrf_token %}
+        {% for field in config.form_fields %}
+            {% with label=config.labels|ensure_dict|dict_item:field %}
+            <div class="form-group">
+                <label for="{{ field }}">{{ label|default:field|snake_to_title }}</label>
+
+                {% if field in config.boolean_fields %}
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="{{ field }}" name="{{ field }}" {% if instance and instance|attr:field %}checked{% endif %}>
+                        <span>Activo</span>
+                    </div>
+
+                {% elif field in config.file_fields %}
+                    <input type="file" id="{{ field }}" name="{{ field }}">
+                    {% with archivo=instance|attr:field %}
+                        {% if archivo|file_url %}
+                            <a class="enlace-archivo" href="{{ archivo|file_url }}" target="_blank">Ver archivo actual</a>
+                        {% endif %}
+                    {% endwith %}
+
+                {% elif field in config.choices_fields %}
+                    {% with opciones=config.choices_fields|dict_item:field %}
+                        <select id="{{ field }}" name="{{ field }}">
+                            {% for valor, texto in opciones %}
+                                {% if instance %}
+                                    <option value="{{ valor }}" {% if instance|attr:field == valor %}selected{% endif %}>{{ texto }}</option>
+                                {% else %}
+                                    <option value="{{ valor }}">{{ texto }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    {% endwith %}
+
+                {% elif field in foreign_keys %}
+                    {% with opciones=foreign_keys|dict_item:field %}
+                        {% with current=instance|fk_value:field %}
+                        <select id="{{ field }}" name="{{ field }}">
+                            <option value="">--- Selecciona ---</option>
+                            {% for opcion in opciones %}
+                                {% if current|stringformat:"s" == opcion.pk|stringformat:"s" %}
+                                    <option value="{{ opcion.pk }}" selected>{{ opcion }}</option>
+                                {% else %}
+                                    <option value="{{ opcion.pk }}">{{ opcion }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                        {% endwith %}
+                    {% endwith %}
+
+                {% elif field|lower|contains:"descripcion" or field|lower|contains:"mensaje" or field|lower|contains:"direccion" %}
+                    <textarea id="{{ field }}" name="{{ field }}" rows="4">{{ instance|attr:field }}</textarea>
+
+                {% elif field|lower|contains:"fecha" %}
+                    {% if field in 'fecha_inicio fecha_fin fecha_publicacion' %}
+                        <input type="date" id="{{ field }}" name="{{ field }}" value="{% if instance and instance|attr:field %}{{ instance|attr:field|date:'Y-m-d' }}{% endif %}">
+                    {% else %}
+                        <input type="datetime-local" id="{{ field }}" name="{{ field }}" value="{% if instance and instance|attr:field %}{{ instance|attr:field|date:'Y-m-d\\TH:i' }}{% endif %}">
+                    {% endif %}
+
+                {% elif field|lower|contains:"precio" or field|lower|contains:"valor" or field in 'total precio_unitario_actual precio_unitario_venta' %}
+                    <input type="number" step="0.01" id="{{ field }}" name="{{ field }}" value="{{ instance|attr:field }}">
+
+                {% elif field|lower|contains:"cantidad" or field == "stock" %}
+                    <input type="number" min="0" step="1" id="{{ field }}" name="{{ field }}" value="{{ instance|attr:field|default_if_none:0 }}">
+
+                {% else %}
+                    <input type="text" id="{{ field }}" name="{{ field }}" value="{{ instance|attr:field }}">
+                {% endif %}
+            </div>
+            {% endwith %}
+        {% endfor %}
+
+        <div class="acciones-form">
+            <button type="submit" class="btn btn-primario">{% if is_update %}Actualizar{% else %}Guardar{% endif %}</button>
+            {% if url_lista %}
+                <a class="btn btn-secundario" href="{% url url_lista %}">Cancelar</a>
+            {% endif %}
+        </div>
+    </form>
+</section>

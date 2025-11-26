@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load static %}
+{% block contenido %}
+<section class="titulo-busqueda">
+    <h2>Últimas novedades</h2>
+</section>
+
+<div class="grid-card">
+    {% for novedad in novedades %}
+        <article class="novedad-card">
+            <div class="producto-imagen">
+                {% if novedad.imagen_url %}
+                    <img src="{{ novedad.imagen_url.url }}" alt="{{ novedad.titulo }}">
+                {% endif %}
+            </div>
+            <h3>{{ novedad.titulo }}</h3>
+            <p>{{ novedad.descripcion }}</p>
+            <small>{{ novedad.fecha_publicacion }}</small>
+        </article>
+    {% empty %}
+        <p>No hay novedades registradas todavía.</p>
+    {% endfor %}
+</div>
+{% endblock %}

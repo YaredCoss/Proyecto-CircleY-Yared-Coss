@@ -1,0 +1,6 @@
+{% extends "base_admin.html" %}
+{% block contenido_admin %}
+{% with slug='categorias' url_lista='app_clientes:ver_categorias' titulo_seccion='Categorías' %}
+    {% include "admin/includes/crud_form.html" %}
+{% endwith %}
+{% endblock %}

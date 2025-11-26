@@ -1,0 +1,46 @@
+{% load ui_extras %}
+<section class="crud-list">
+    <div class="crud-header">
+        <h1 class="titulo-seccion">{{ titulo_seccion }}</h1>
+        <form class="buscador" method="get">
+            <input type="search" name="busqueda" placeholder="Buscar..." value="{{ busqueda }}">
+            <button type="submit" class="btn btn-primario">Buscar</button>
+        </form>
+        {% if url_agregar %}
+            <a href="{% url url_agregar %}" class="btn btn-secundario">Agregar nuevo</a>
+        {% endif %}
+    </div>
+
+    <div class="tabla-responsive">
+        <table class="tabla-admin">
+            <thead>
+                <tr>
+                    {% for field in config.list_fields %}
+                        <th>{{ field|snake_to_title }}</th>
+                    {% endfor %}
+                    <th class="col-acciones">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in rows %}
+                    <tr>
+                        {% for value in row.values %}
+                            <td>{{ value|default_if_none:""|highlight:busqueda }}</td>
+                        {% endfor %}
+                        <td class="acciones">
+                            {% if url_editar_name %}
+                                <a class="btn-accion editar" href="{% url url_editar_name row.id %}">Editar</a>
+                            {% endif %}
+                            {% if url_eliminar_name %}
+                                <a class="btn-accion eliminar" href="{% url url_eliminar_name row.id %}">Borrar</a>
+                            {% endif %}
+                            {% block acciones_extras %}{% endblock %}
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr><td colspan="99">No hay registros.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>

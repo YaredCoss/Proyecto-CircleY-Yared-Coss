@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load static %}
+{% block contenido %}
+<section class="checkout">
+    <h2>Confirmar pedido</h2>
+    <div class="checkout-grid">
+        <article>
+            <h3>Resumen</h3>
+            <ul class="lista-resumen">
+                {% for item in items %}
+                    <li>
+                        <span>{{ item.producto.nombre }} (x{{ item.cantidad }})</span>
+                        <strong>{{ subtotal|floatformat:2 }}</strong>
+                    </li>
+                {% endfor %}
+            </ul>
+            <p>Subtotal: <strong>{{ subtotal|floatformat:2 }}</strong></p>
+            <p>Descuentos: <strong>-{{ total_descuento|floatformat:2 }}</strong></p>
+            <p>Total a pagar: <strong>{{ total_a_pagar|floatformat:2 }}</strong></p>
+        </article>
+
+        <article>
+            <h3>Datos de entrega</h3>
+            <form method="post">
+                {% csrf_token %}
+                <label for="direccion_envio">Dirección de envío</label>
+                <textarea id="direccion_envio" name="direccion_envio" rows="3">{{ request.user.cliente.direccion }}</textarea>
+
+                <label for="metodo_pago">Método de pago</label>
+                <select id="metodo_pago" name="metodo_pago" required>
+                    {% for valor, etiqueta in metodos_pago %}
+                        <option value="{{ valor }}">{{ etiqueta }}</option>
+                    {% endfor %}
+                </select>
+
+
+                <button type="submit" class="btn btn-primario">Confirmar pedido</button>
+            </form>
+        </article>
+    </div>
+</section>
+{% endblock %}

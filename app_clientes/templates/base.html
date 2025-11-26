@@ -1,0 +1,74 @@
+{% load static %}
+{% load ui_extras %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Circle Y | {{ titulo_pagina|default:"Inicio" }}</title>
+    <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+</head>
+<body>
+<header class="encabezado">
+    <div class="logo-wrapper">
+        <img src="{% static 'img/logo.png' %}" alt="Circle Y" class="logo">
+        <h1>Circle Y</h1>
+    </div>
+    <nav class="menu-principal">
+        <button class="icon" id="menu-btn">&#9776;</button>
+        <ul id="menu">
+            <li><a href="{% url 'app_clientes:inicio_circley' %}">Inicio</a></li>
+            <li><a href="{% url 'app_clientes:productos_servicios' %}">Productos y Servicios</a></li>
+            <li><a href="{% url 'app_clientes:promociones' %}">Promociones</a></li>
+            <li><a href="{% url 'app_clientes:novedades' %}">Novedades</a></li>
+            <li><a href="{% url 'app_clientes:contacto' %}">Contáctanos</a></li>
+            {% if categorias_menu %}
+                <li class="submenu">
+                    <button type="button" class="submenu-trigger">Categorías</button>
+                    <ul>
+                        {% for categoria in categorias_menu %}
+                            <li><a href="{% url 'app_clientes:productos_servicios' %}?categoria={{ categoria.id }}">{{ categoria.nombre }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            {% endif %}
+        </ul>
+        <div class="acciones-usuario">
+            {% if user.is_authenticated %}
+                <div class="usuario">
+                    <button class="usuario-btn">{{ user.first_name|default:user.username }}</button>
+                    <ul>
+                        {% if user.is_staff %}
+                            <li><a href="{% url 'app_clientes:dashboard_admin' %}">Panel admin</a></li>
+                        {% endif %}
+                        <li><a href="{% url 'app_clientes:historial_pedidos' %}">Mis pedidos</a></li>
+                        <li><a href="{% url 'app_clientes:logout' %}">Cerrar sesión</a></li>
+                    </ul>
+                </div>
+            {% else %}
+                <a class="btn btn-login" href="{% url 'app_clientes:login' %}">Iniciar sesión</a>
+            {% endif %}
+            <a class="btn btn-carrito" href="{% url 'app_clientes:ver_carrito' %}">
+                Carrito ({{ carrito_total_items }})
+            </a>
+        </div>
+    </nav>
+</header>
+
+<main>
+    {% if messages %}
+        <section class="mensajes">
+            {% for message in messages %}
+                <div class="alerta {{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        </section>
+    {% endif %}
+    {% block contenido %}{% endblock %}
+</main>
+
+<footer>
+    <p>Coss Heras Yared Osiel · 5ºJ · Construye Aplicaciones Web</p>
+</footer>
+
+<script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>

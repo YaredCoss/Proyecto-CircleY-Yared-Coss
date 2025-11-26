@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block contenido %}
+<section class="admin-wrapper">
+    <aside class="admin-sidebar">
+        <h2>Panel Circle Y</h2>
+        <ul>
+            <li><a href="{% url 'app_clientes:dashboard_admin' %}">Dashboard</a></li>
+            <li><a href="{% url 'app_clientes:ver_clientes' %}">Clientes</a></li>
+            <li><a href="{% url 'app_clientes:ver_categorias' %}">Categorías</a></li>
+            <li><a href="{% url 'app_clientes:ver_productos' %}">Productos</a></li>
+            <li><a href="{% url 'app_clientes:ver_promociones' %}">Promociones</a></li>
+            <li><a href="{% url 'app_clientes:ver_novedades' %}">Novedades</a></li>
+            <li><a href="{% url 'app_clientes:ver_productos_promociones' %}">Producto ↔ Promoción</a></li>
+            <li><a href="{% url 'app_clientes:ver_pedidos' %}">Pedidos</a></li>
+            <li><a href="{% url 'app_clientes:ver_mensajes_contacto' %}">Mensajes</a></li>
+        </ul>
+    </aside>
+    <section class="admin-contenido">
+        {% block contenido_admin %}{% endblock %}
+    </section>
+</section>
+{% endblock %}

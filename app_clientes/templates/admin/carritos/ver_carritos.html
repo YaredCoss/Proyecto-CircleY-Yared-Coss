@@ -1,0 +1,6 @@
+{% extends "base_admin.html" %}
+{% block contenido_admin %}
+{% with titulo_seccion='Carritos' url_agregar='app_clientes:agregar_carritos' url_editar_name='app_clientes:actualizar_carritos' url_eliminar_name='app_clientes:borrar_carritos' %}
+    {% include "admin/includes/crud_list.html" %}
+{% endwith %}
+{% endblock %}

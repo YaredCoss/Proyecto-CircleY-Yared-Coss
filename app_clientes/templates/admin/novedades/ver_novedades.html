@@ -1,0 +1,6 @@
+{% extends "base_admin.html" %}
+{% block contenido_admin %}
+{% with titulo_seccion='Novedades' url_agregar='app_clientes:agregar_novedades' url_editar_name='app_clientes:actualizar_novedades' url_eliminar_name='app_clientes:borrar_novedades' %}
+    {% include "admin/includes/crud_list.html" %}
+{% endwith %}
+{% endblock %}

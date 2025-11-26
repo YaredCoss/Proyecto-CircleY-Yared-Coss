@@ -1,0 +1,6 @@
+{% extends "base_admin.html" %}
+{% block contenido_admin %}
+{% with slug='carritos' titulo_seccion='Carritos' url_lista='app_clientes:ver_carritos' %}
+    {% include "admin/includes/crud_form.html" %}
+{% endwith %}
+{% endblock %}

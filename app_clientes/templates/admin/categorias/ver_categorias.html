@@ -1,0 +1,6 @@
+{% extends "base_admin.html" %}
+{% block contenido_admin %}
+{% with url_agregar='app_clientes:agregar_categorias' url_editar_name='app_clientes:actualizar_categorias' url_eliminar_name='app_clientes:borrar_categorias' %}
+    {% include "admin/includes/crud_list.html" %}
+{% endwith %}
+{% endblock %}
