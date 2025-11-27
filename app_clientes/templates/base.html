@@ -35,7 +35,7 @@
         <div class="acciones-usuario">
             {% if user.is_authenticated %}
                 <div class="usuario">
-                    <button class="usuario-btn">{{ user.first_name|default:user.username }}</button>
+                    <button class="usuario-btn">{{ user.username }} : {{ user.first_name }}</button>
                     <ul>
                         {% if user.is_staff %}
                             <li><a href="{% url 'app_clientes:dashboard_admin' %}">Panel admin</a></li>
